@@ -11,6 +11,10 @@
 		D19431332BED85060000F00B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431322BED85060000F00B /* ContentView.swift */; };
 		D19431352BED85070000F00B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D19431342BED85070000F00B /* Assets.xcassets */; };
 		D19431382BED85070000F00B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D19431372BED85070000F00B /* Preview Assets.xcassets */; };
+		D19431402BED85880000F00B /* TicTacToeBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D194313F2BED85880000F00B /* TicTacToeBoard.swift */; };
+		D19431432BED87FC0000F00B /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431422BED87FC0000F00B /* Move.swift */; };
+		D19431452BED880C0000F00B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431442BED880C0000F00B /* Player.swift */; };
+		D19431482BED88C20000F00B /* GameBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431472BED88C20000F00B /* GameBoardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +23,10 @@
 		D19431322BED85060000F00B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D19431342BED85070000F00B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D19431372BED85070000F00B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D194313F2BED85880000F00B /* TicTacToeBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeBoard.swift; sourceTree = "<group>"; };
+		D19431422BED87FC0000F00B /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		D19431442BED880C0000F00B /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		D19431472BED88C20000F00B /* GameBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,9 @@
 			children = (
 				D19431302BED85060000F00B /* super_tic_tac_toeApp.swift */,
 				D19431322BED85060000F00B /* ContentView.swift */,
+				D19431462BED88B10000F00B /* ViewModel */,
+				D19431412BED87EF0000F00B /* Model */,
+				D194313E2BED857D0000F00B /* View */,
 				D19431342BED85070000F00B /* Assets.xcassets */,
 				D19431362BED85070000F00B /* Preview Content */,
 			);
@@ -65,6 +76,31 @@
 				D19431372BED85070000F00B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D194313E2BED857D0000F00B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D194313F2BED85880000F00B /* TicTacToeBoard.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D19431412BED87EF0000F00B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D19431422BED87FC0000F00B /* Move.swift */,
+				D19431442BED880C0000F00B /* Player.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D19431462BED88B10000F00B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D19431472BED88C20000F00B /* GameBoardViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +173,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D19431432BED87FC0000F00B /* Move.swift in Sources */,
+				D19431482BED88C20000F00B /* GameBoardViewModel.swift in Sources */,
 				D19431332BED85060000F00B /* ContentView.swift in Sources */,
+				D19431402BED85880000F00B /* TicTacToeBoard.swift in Sources */,
+				D19431452BED880C0000F00B /* Player.swift in Sources */,
 				D19431312BED85060000F00B /* super_tic_tac_toeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

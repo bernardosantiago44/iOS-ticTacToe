@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+struct Move {
+    let player: Player
+    let boardPosition: Int
+    
+    var symbol: String {
+        switch player {
+        case .human:
+            return "xmark"
+        case .computer:
+            return "circle"
+        }
+    }
+}
