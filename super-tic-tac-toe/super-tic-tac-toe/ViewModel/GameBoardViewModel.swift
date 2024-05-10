@@ -12,9 +12,12 @@ final class GameBoardViewModel: ObservableObject {
     /// Holds the current game's movements, using nil to represent an open slot
     /// and an instance of type Move to represent a human mark or a computer mark.
     ///
-    @Published var board: [Move?] = .init(repeating: nil, count: 9)
+    @Published var board: [Move?] = Array(repeating: nil, count: 9)
     
     @Published var isGameBoardDisabled = false
+    
+    /// Used to hold, show and dismiss winning or draw alerts
+    @Published var alert: AlertComponent = GameAlerts.defaultAlert
     
     
     /// Returns whether a given index is occupied by a move in `board`
@@ -56,5 +59,11 @@ final class GameBoardViewModel: ObservableObject {
     /// Checks if the game has resulted in draw.
     func checkForDraw() -> Bool {
         return board.compactMap{ $0 }.count == 9
+    }
+    
+    func resetGame() {
+        self.board = Array(repeating: nil, count: 9)
+        self.isGameBoardDisabled = false
+        self.alert = GameAlerts.defaultAlert
     }
 }

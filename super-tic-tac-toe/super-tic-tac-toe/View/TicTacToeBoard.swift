@@ -13,52 +13,115 @@ struct TicTacToeBoard: View {
     @StateObject var GameBoard = GameBoardViewModel()
     
     var body: some View {
-        LazyVGrid(columns: columns) {
-            ForEach(0..<9) { i in
-                ZStack {
-                    Circle()
-                        .foregroundStyle(.green)
-                    //                    .overlay(Color.white.mask(Circle()).opacity(0.3))
-                    if let move = GameBoard.board[i] {
-                        Image(systemName: move.symbol)
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .foregroundStyle(.white)
+        VStack {
+            VStack {
+                GameAlert(alertComponent: GameBoard.alert, resetGame: GameBoard.resetGame)
+                    .padding(.horizontal)
+            }
+            
+            LazyVGrid(columns: columns) {
+                ForEach(0..<9) { i in
+                    ZStack {
+                        Circle()
+                            .foregroundStyle(.green)
+                        //                    .overlay(Color.white.mask(Circle()).opacity(0.3))
+                        if let move = GameBoard.board[i] {
+                            Image(systemName: move.symbol)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundStyle(.white)
+                        }
                     }
-                }
-                .onTapGesture {
-                    // Check if tapped index is occupied. If it isn't, then
-                    // place the player's mark and calculate the computer's move.
-                    if GameBoard.isSquareOccupied(forIndex: i) { return }
-                    GameBoard.board[i] = Move(player: .human, boardPosition: i)
-                    GameBoard.isGameBoardDisabled = true
-                    if GameBoard.checkIfWinner(player: .human) {
-                        print("Human wins")
-                        return
-                    }
-                    
-                    if GameBoard.checkForDraw() {
-                        print("draw")
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        let computerMove = GameBoard.makeComputerMove()
-                        GameBoard.board[computerMove] = Move(player: .computer, boardPosition: computerMove)
-                        GameBoard.isGameBoardDisabled = false
-                        if GameBoard.checkIfWinner(player: .computer) {
-                            print("Computer wins")
+                    .onTapGesture {
+                        // Check if tapped index is occupied. If it isn't, then
+                        // place the player's mark and calculate the computer's move.
+                        if GameBoard.isSquareOccupied(forIndex: i) { return }
+                        GameBoard.board[i] = Move(player: .human, boardPosition: i)
+                        if GameBoard.checkIfWinner(player: .human) {
+                            GameBoard.alert = GameAlerts.humanWinerAlert
                             return
                         }
                         
                         if GameBoard.checkForDraw() {
-                            print("draw")
+                            GameBoard.alert = GameAlerts.drawAlert
+                            return
+                        }
+                        
+                        GameBoard.isGameBoardDisabled = true
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            let computerMove = GameBoard.makeComputerMove()
+                            GameBoard.board[computerMove] = Move(player: .computer, boardPosition: computerMove)
+                            GameBoard.isGameBoardDisabled = false
+                            if GameBoard.checkIfWinner(player: .computer) {
+                                GameBoard.alert = GameAlerts.computerWinerAlert
+                                return
+                            }
+                            
+                            if GameBoard.checkForDraw() {
+                                GameBoard.alert = GameAlerts.drawAlert
+                                return
+                            }
                         }
                     }
                 }
             }
+            .padding()
+            .disabled(GameBoard.isGameBoardDisabled)
+            .blur(radius: GameBoard.alert != GameAlerts.defaultAlert ? 5 : 0)
         }
-        .padding()
-        .disabled(GameBoard.isGameBoardDisabled)
+        .animation(.easeOut, value: GameBoard.alert)
+    }
+}
+
+struct GameAlert: View {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    let alertComponent: AlertComponent
+    var resetGame: () -> Void
+    
+    var body: some View {
+        ZStack {
+            if dynamicTypeSize < .xxxLarge {
+                HStack {
+                    textAndMessage
+                    playAgainButton
+                }
+                .padding()
+            } else {
+                VStack {
+                    textAndMessage
+                    playAgainButton
+                }
+                .padding()
+            }
+        }
+        .background {
+            RoundedRectangle(cornerRadius: 15).foregroundStyle(.thinMaterial)
+        }
+    }
+    
+    var playAgainButton: some View {
+        Group {
+            if let buttonMessage = alertComponent.buttonMessage {
+                Button(buttonMessage) {
+                    resetGame()
+                }
+                .buttonStyle(BorderedProminentButtonStyle())
+                .foregroundStyle(.white)
+            }
+        }
+    }
+    
+    var textAndMessage: some View {
+        VStack(alignment: .leading) {
+            Text(alertComponent.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.title)
+                .bold()
+            Text(alertComponent.message)
+                .font(.body)
+        }
+        .foregroundStyle(.primary)
     }
 }
 

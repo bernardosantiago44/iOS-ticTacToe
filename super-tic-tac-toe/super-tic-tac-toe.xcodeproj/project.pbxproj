@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D11F25572BEEA7400081461D /* AlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11F25562BEEA7400081461D /* AlertComponent.swift */; };
 		D19431312BED85060000F00B /* super_tic_tac_toeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431302BED85060000F00B /* super_tic_tac_toeApp.swift */; };
 		D19431332BED85060000F00B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19431322BED85060000F00B /* ContentView.swift */; };
 		D19431352BED85070000F00B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D19431342BED85070000F00B /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D11F25562BEEA7400081461D /* AlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertComponent.swift; sourceTree = "<group>"; };
 		D194312D2BED85060000F00B /* super-tic-tac-toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "super-tic-tac-toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D19431302BED85060000F00B /* super_tic_tac_toeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = super_tic_tac_toeApp.swift; sourceTree = "<group>"; };
 		D19431322BED85060000F00B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				D19431422BED87FC0000F00B /* Move.swift */,
 				D19431442BED880C0000F00B /* Player.swift */,
+				D11F25562BEEA7400081461D /* AlertComponent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -173,6 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D11F25572BEEA7400081461D /* AlertComponent.swift in Sources */,
 				D19431432BED87FC0000F00B /* Move.swift in Sources */,
 				D19431482BED88C20000F00B /* GameBoardViewModel.swift in Sources */,
 				D19431332BED85060000F00B /* ContentView.swift in Sources */,
