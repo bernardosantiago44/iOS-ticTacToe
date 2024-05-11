@@ -27,9 +27,42 @@ final class GameBoardViewModel: ObservableObject {
         return board.contains(where: { $0?.boardPosition == index })
     }
     
+    /// All posible win combinations
+    private let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal win conditions
+                                              [0, 3, 6], [1, 4, 7], [2, 5, 8], //   Vertical win conditions
+                                              [0, 4, 8], [2, 4, 6]]            //   Diagonal win conditions
+    
     /// Returns a random available slot to make the computer's move.
     /// - Returns: Int
     func makeComputerMove() -> Int {
+
+        // If AI can win, then win
+        if let next = getNextPositionBeforeWinning(for: .computer) { // Take the winning position
+            return next
+        }
+        
+        // If AI can't win, block
+        if let next = getNextPositionBeforeWinning(for: .human) { // Get the winning position of human and block it
+            return next
+        }
+        
+        // If AI can't block, take middle position
+        let middleSquare = 4
+        if !isSquareOccupied(forIndex: middleSquare) {
+            return middleSquare
+        }
+        
+        // If AI can't take middle position, take one of the edges
+        var edges = [0, 2, 6, 8]
+        while edges.count != 0 {
+            let randomEdge = Int.random(in: 0...edges.count - 1)
+            if !isSquareOccupied(forIndex: edges[randomEdge]) {
+                return edges[randomEdge]
+            }
+            edges.remove(at: randomEdge)
+        }
+        
+        // If AI can't take an edge position, choose random slot
         var movePosition: Int
         
         repeat {
@@ -42,18 +75,35 @@ final class GameBoardViewModel: ObservableObject {
     /// Checks if the given player has already won.
     /// - Returns: Bool
     func checkIfWinner(player: Player) -> Bool {
-        let winPatterns: Set<Set<Int>> = [[0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal win conditions
-                                          [0, 3, 6], [1, 4, 7], [2, 5, 8], //   Vertical win conditions
-                                          [0, 4, 8], [2, 4, 6]]            //   Diagonal win conditions
-        
-        let playerMoves = board.compactMap{ $0 }.filter{ $0.player == player } // Gets all non-nil values of `board` and filters the player we're looking at
-        let playerPositions = Set(playerMoves.map{ $0.boardPosition })
+        let playerPositions = getMoves(for: player)
         
         // If we find at least one case where a win pattern is a sub-set of the player positions, then it wins.
         for pattern in winPatterns where pattern.isSubset(of: playerPositions) { return true }
         
         // Otherwise, the player has not won
         return false
+    }
+    
+    private func getMoves(for player: Player) -> Set<Int> {
+        let moves = board.compactMap{ $0 }.filter{ $0.player == player }   // Gets all non-nil values of `board` and filters the player we're looking at
+        let positions = Set(moves.map{ $0.boardPosition }) // Create the set of only positions where the player has marked
+        return positions
+    }
+    
+    
+    /// If the provided player is one step away from winning, returns the index of the winning position.
+    /// - Parameter player: Player
+    /// - Returns: Int?
+    private func getNextPositionBeforeWinning(for player: Player) -> Int? {
+        let moves = getMoves(for: player)
+        for pattern in winPatterns {
+            let winPositions = pattern.subtracting(moves) // Compare the win patterns to the positions it has marked
+            if winPositions.count == 1 { // If it's missing only one position to win, take it
+                let isAvailable = !isSquareOccupied(forIndex: winPositions.first!)
+                if isAvailable { return winPositions.first! }
+            }
+        }
+        return nil
     }
     
     /// Checks if the game has resulted in draw.
