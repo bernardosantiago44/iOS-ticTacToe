@@ -30,5 +30,7 @@ struct GameAlerts {
     
     static let defaultAlert = AlertComponent(title: "Super Tic-tac-toe", message: "Let's play a game of tic-tac-toe", buttonMessage: nil)
     
+    static let superTTTGame = AlertComponent(title: "Super Tic-tac-toe", message: "Tap on an open slot to play next!")
+    
     private init() {}
 }

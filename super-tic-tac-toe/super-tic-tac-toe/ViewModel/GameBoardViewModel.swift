@@ -32,7 +32,7 @@ final class GameBoardViewModel: ObservableObject {
                                               [0, 3, 6], [1, 4, 7], [2, 5, 8], //   Vertical win conditions
                                               [0, 4, 8], [2, 4, 6]]            //   Diagonal win conditions
     
-    /// Returns a random available slot to make the computer's move.
+    /// Returns an available slot to make the computer's best move.
     /// - Returns: Int
     func makeComputerMove() -> Int {
 
@@ -54,7 +54,7 @@ final class GameBoardViewModel: ObservableObject {
         
         // If AI can't take middle position, take one of the edges
         var edges = [0, 2, 6, 8]
-        while edges.count != 0 {
+        while edges.count > 0 {
             let randomEdge = Int.random(in: 0...edges.count - 1)
             if !isSquareOccupied(forIndex: edges[randomEdge]) {
                 return edges[randomEdge]
@@ -115,5 +115,40 @@ final class GameBoardViewModel: ObservableObject {
         self.board = Array(repeating: nil, count: 9)
         self.isGameBoardDisabled = false
         self.alert = GameAlerts.defaultAlert
+    }
+    
+    /// If available, puts the human's symbol at the index tapped
+    /// and makes computer move while checking for winners on both ends.
+    func handlePlayerTap(at index: Int) {
+        // Check if tapped index is occupied. If it isn't, then
+        // place the player's mark and calculate the computer's move.
+        if isSquareOccupied(forIndex: index) { return }
+        self.board[index] = Move(player: .human, boardPosition: index)
+        if self.checkIfWinner(player: .human) {
+            self.alert = GameAlerts.humanWinerAlert
+            return
+        }
+        
+        if self.checkForDraw() {
+            self.alert = GameAlerts.drawAlert
+            return
+        }
+        
+        self.isGameBoardDisabled = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let computerMove = self.makeComputerMove() // Guaranteed free slot
+            self.board[computerMove] = Move(player: .computer, boardPosition: computerMove)
+            if self.checkIfWinner(player: .computer) {
+                self.alert = GameAlerts.computerWinerAlert
+                return
+            }
+            
+            if self.checkForDraw() {
+                self.alert = GameAlerts.drawAlert
+                return
+            }
+            self.isGameBoardDisabled = false
+        }
     }
 }
